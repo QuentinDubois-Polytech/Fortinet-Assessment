@@ -26,7 +26,7 @@ You can find the Python code of petstore client API in the following GitHub repo
 
 **Question: List common vulnerabilities that these API endpoints may contain.**
 
-To respond to this question, I retrieved my favorite site, which lists the most common vulnerabilities, OWASP (Open Source Fondation for Application Security) and in particular [OWASP Top 10](https://owasp.org/Top10/en/). I chose some of the vulnerabilities' types mentioned in this article that are applicable to our case study, and I developed a little bit on each one.
+To respond to this question, I retrieved my favorite site, which lists the most common vulnerabilities related to web applications, OWASP (Open Web Application Security Project) and in particular [OWASP Top 10](https://owasp.org/Top10/en/). I chose some of the vulnerabilities' types mentioned in this article that are applicable to our case study, and I developed a little bit on each one.
 
 ### Broken Access Control
 
@@ -38,7 +38,7 @@ This part corresponds to the user's identity, authentication and session managem
 
 ### Code Injection
 
-Code Injection means the user can inject data containing code that will be executed, changing the normal program's flow. It comes from using invalid and unchecked user input. As examples of code injection, there are command injection, SQL Injection, NoSQL injection, Cross-site Scripting (XSS)…
+Code Injection means the user can inject data containing code that will be executed, changing the normal program's flow. It comes from using invalid and unchecked user input. As examples of code injection, there are: command injection, SQL Injection, NoSQL injection, Cross-site Scripting (XSS)…
 
 ### Security Misconfiguration
 
