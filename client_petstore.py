@@ -1,3 +1,7 @@
+"""
+HTTP Client for Petstore
+"""
+
 from dataclasses import dataclass
 
 import requests
@@ -10,6 +14,9 @@ BASE_HEADER = {"accept": "application/json"}
 
 @dataclass
 class Order:
+    """
+    Order dataclass
+    """
     id: int
     pet_id: int
     quantity: int
@@ -18,6 +25,9 @@ class Order:
     complete: bool
 
     def convertToApi(self):
+        """
+        Convert Order to API format
+        """
         return {
             "id": self.id,
             "petId": self.pet_id,
@@ -29,6 +39,11 @@ class Order:
 
     @classmethod
     def convertFromApi(cls, data: dict[str, any]) -> 'Order':
+        """
+        Convert API Order object into to Order object
+        :param data: API Order object
+        :return: Order object converted
+        """
         return cls(
             data.get("id"),
             data.get("petId"),
@@ -40,6 +55,11 @@ class Order:
 
 
 def create_order(order: Order) -> requests.Response:
+    """
+    Call to petstore's API to create an order
+    :param order: Order to create
+    :return: response of the request
+    """
     url = f"{BASE_URL}/store/order"
     data = order.convertToApi()
     r = requests.post(url, json=data, headers=BASE_HEADER)
@@ -47,18 +67,32 @@ def create_order(order: Order) -> requests.Response:
 
 
 def get_order_by_id(order_id: id) -> requests.Response:
+    """
+    Call to petstore's API to get an order by its ID
+    :param order_id: order ID to retrieve
+    :return: response of the request
+    """
     url = f"{BASE_URL}/store/order/{order_id}"
     r = requests.get(url, headers=BASE_HEADER)
     return r
 
 
 def delete_order_by_id(order_id: id) -> requests.Response:
+    """
+    Call to petstore's API to delete an order by its ID
+    :param order_id: order ID to delete
+    :return: response of the request
+    """
     url = f"{BASE_URL}/store/order/{order_id}"
     r = requests.delete(url, headers=BASE_HEADER)
     return r
 
 
-def display(request: requests.Response):
+def display(request: requests.Response) -> None:
+    """
+    Display information about the request
+    :param request: request to display
+    """
     logging.info("-----General Informations-----")
     logging.info(f"URL : {request.url}")
     logging.info(f"Status code : {request.status_code}")
@@ -72,6 +106,10 @@ def display(request: requests.Response):
 
 
 def parse_arguments() -> argparse.Namespace:
+    """
+    Parse CLI arguments
+    :return: arguments parsed
+    """
     parser = argparse.ArgumentParser("Client for Petstore")
     parser.add_argument("-v", "--verbose", help="Increase output verbosity", action="store_true")
 
