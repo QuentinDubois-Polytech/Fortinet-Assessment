@@ -101,8 +101,8 @@ def display(request: requests.Response) -> None:
     logging.debug(f"Headers : {request.headers}")
     logging.debug(f"Body Request : {request.request.body}")
 
-    logging.debug("-----Response Informations-----")
-    logging.debug(f"Data : {request.text}")
+    logging.info("-----Response Informations-----")
+    logging.info(f"Data : {request.text}")
 
 
 def parse_arguments() -> argparse.Namespace:
