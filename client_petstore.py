@@ -1,17 +1,21 @@
+from dataclasses import dataclass
+
 import requests
 import argparse
+import logging
 
 BASE_URL = "https://petstore.swagger.io/v2"
 BASE_HEADER = {"accept": "application/json"}
 
+
+@dataclass
 class Order:
-    def __init__(self, id, pet_id, quantity, ship_date, status, complete):
-        self.id = id
-        self.pet_id = pet_id
-        self.quantity = quantity
-        self.ship_date = ship_date
-        self.status = status
-        self.complete = complete
+    id: int
+    pet_id: int
+    quantity: int
+    ship_date: str
+    status: str
+    complete: bool
 
     def convertToApi(self):
         return {
@@ -23,38 +27,54 @@ class Order:
             "complete": self.complete
         }
 
-def create_order(order):
+    @classmethod
+    def convertFromApi(cls, data: dict[str, any]) -> 'Order':
+        return cls(
+            data.get("id"),
+            data.get("petId"),
+            data.get("quantity"),
+            data.get("shipDate"),
+            data.get("status"),
+            data.get("complete")
+        )
+
+
+def create_order(order: Order) -> requests.Response:
     url = f"{BASE_URL}/store/order"
     data = order.convertToApi()
-    print(data)
     r = requests.post(url, json=data, headers=BASE_HEADER)
     return r
 
-def get_order_by_id(order_id):
+
+def get_order_by_id(order_id: id) -> requests.Response:
     url = f"{BASE_URL}/store/order/{order_id}"
     r = requests.get(url, headers=BASE_HEADER)
     return r
 
-def delete_order_by_id(order_id):
+
+def delete_order_by_id(order_id: id) -> requests.Response:
     url = f"{BASE_URL}/store/order/{order_id}"
     r = requests.delete(url, headers=BASE_HEADER)
     return r
 
-def display(request):
-    print("-----General Informations-----")
-    print(f"URL : {request.url}")
-    print(f"Status code : {request.status_code}")
 
-    print("-----Request Informations-----")
-    print(f"Headers : {request.headers}")
-    print(f"Body Request : {request.request.body}")
+def display(request: requests.Response):
+    logging.info("-----General Informations-----")
+    logging.info(f"URL : {request.url}")
+    logging.info(f"Status code : {request.status_code}")
 
-    print("-----Response Informations-----")
-    print(f"Data : {request.text}")
+    logging.debug("-----Request Informations-----")
+    logging.debug(f"Headers : {request.headers}")
+    logging.debug(f"Body Request : {request.request.body}")
+
+    logging.debug("-----Response Informations-----")
+    logging.debug(f"Data : {request.text}")
 
 
-def parse_arguments():
+def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser("Client for Petstore")
+    parser.add_argument("-v", "--verbose", help="Increase output verbosity", action="store_true")
+
     subparsers = parser.add_subparsers(title="commands", dest="command", help="Available commands.")
 
     create_order_parser = subparsers.add_parser("create", help="Create an order")
@@ -73,10 +93,17 @@ def parse_arguments():
 
     return parser.parse_args()
 
+
 if __name__ == "__main__":
     args = parse_arguments()
 
-    match(args.command):
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.debug("Verbose mode activated")
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+    match args.command:
         case "create":
             order = Order(args.id, args.pet_id, args.quantity, args.ship_date, args.status, args.complete)
             request = create_order(order)
@@ -89,6 +116,3 @@ if __name__ == "__main__":
             display(request)
         case _:
             print("Invalid command")
-
-
-
