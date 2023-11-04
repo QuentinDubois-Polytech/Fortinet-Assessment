@@ -1,6 +1,6 @@
 # Fortinet-Assessment
 
-This project correspond to my response to the following Fortinet assessement subject.
+This project corresponds to my response to the following Fortinet assessment subject.
 
 ## Subject
 
@@ -21,5 +21,15 @@ The documentation of the API is the below one:
 
 ## Additional information
 
-- You can find the code of my client in the source file : [client_petstore.py](client_petstore.py)
+- You can find the code of my client in the source file: [client_petstore.py](client_petstore.py)
 - You can also find my report to this review in the [report foder](./report) of this project. It is available in two formats: pdf and markdown.
+
+## Prerequisites
+
+You need to have python3 (>= 3.10) installed on your machine.
+You also need to install the packages listed in the [requirements.txt](requirements.txt) file.
+You can do it by running the following command:
+
+```bash
+pip install -r requirements.txt
+```
